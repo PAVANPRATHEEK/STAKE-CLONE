@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-page: #0f1923;
+  --color-surface: #1a2c38;
+  --color-tile: #213743;
+  --color-cta: #1475e1;
+  --color-cta-hover: #1f82f2;
+  --color-gem: #00e701;
+  --color-mine: #e74c3c;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b1bad3;
+  
+  --animate-flip: flip 0.6s ease-out forwards;
+  --animate-shake: shake 0.5s ease-in-out;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-page);
+    color: var(--color-text-primary);
+  }
+}
+
+@keyframes flip {
+  0% { transform: perspective(400px) rotateY(0); }
+  50% { transform: perspective(400px) rotateY(90deg); }
+  100% { transform: perspective(400px) rotateY(180deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Custom utility classes if needed */
+.tile-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease-out;
+}
+
+.tile-front, .tile-back {
+  backface-visibility: hidden;
+}
+
+.tile-back {
+  transform: rotateY(180deg);
+}
+
+.flipped .tile-inner {
+  transform: rotateY(180deg);
+}
