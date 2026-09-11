@@ -51,28 +51,28 @@ export default function Mines() {
       const [resetCountdown, setResetCountdown] = useState(null);
     
       useEffect(() => {
-        if (gameStatus === "bust" || gameStatus === "cashed_out") {
-          setResetCountdown(5);
-          const timer = setInterval(() => {
-            setResetCountdown((prev) => {
-              if (prev <= 1) {
-                clearInterval(timer);
-                setGameStatus("idle");
-                setBoard(Array(25).fill("hidden"));
-                setRevealed([]);
-                setMultiplier(1);
-                setProfit(0);
-                setShake(false);
-                return null;
-              }
-              return prev - 1;
-            });
-          }, 1000);
-          return () => {
-            clearInterval(timer);
-            setResetCountdown(null);
-          };
-        }
+        if (gameStatus !== "bust" && gameStatus !== "cashed_out") return;
+
+        const timer = setInterval(() => {
+          setResetCountdown((prev) => {
+            if (prev === null) return null;
+            if (prev <= 1) {
+              clearInterval(timer);
+              setGameStatus("idle");
+              setBoard(Array(25).fill("hidden"));
+              setRevealed([]);
+              setMultiplier(1);
+              setProfit(0);
+              setShake(false);
+              return null;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        return () => {
+          clearInterval(timer);
+          setResetCountdown(null);
+        };
       }, [gameStatus]);
     
       const handleStart = async () => {
@@ -171,6 +171,7 @@ export default function Mines() {
             if (data.status === "bust") {
               playMineSound();
               setGameStatus("bust");
+              setResetCountdown(5);
               setBoard(data.board); // Contains all mines/safes
               setShake(true);
               setTimeout(() => setShake(false), 500);
@@ -217,6 +218,7 @@ export default function Mines() {
 
       if (res.ok) {
         setGameStatus("cashed_out");
+        setResetCountdown(5);
         setBoard(data.board);
         updateBalanceEvent(data.balance);
         setProfit(data.payout - parseFloat(betAmount));

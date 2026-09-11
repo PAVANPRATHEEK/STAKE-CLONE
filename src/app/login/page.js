@@ -142,7 +142,7 @@ export default function Login() {
 
         {!requiresOtp && (
           <div className="mt-6 text-center text-sm text-[var(--color-text-secondary)]">
-            Don't have an account? <Link href="/register" className="text-[var(--color-cta)] hover:underline font-bold">Register</Link>
+            Don&apos;t have an account? <Link href="/register" className="text-[var(--color-cta)] hover:underline font-bold">Register</Link>
           </div>
         )}
       </div>
